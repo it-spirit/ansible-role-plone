@@ -1,6 +1,17 @@
 ---
 
 ###############################################################################
+# Set local facts.
+- name: Set convenience variables.
+  set_fact:
+    plone_virtualenv_path: '{{ plone_target_path }}/Python-{{ plone_python_version }}'
+  tags:
+    - plone
+    - plone_buildout
+    - plone_venv
+
+
+###############################################################################
 # Setup users and groups.
 - name: Ensure the plone system group is available.
   group:
@@ -21,3 +32,64 @@
     - plone_clients
     - plone_database
     - plone_users
+
+
+###############################################################################
+# Setup directory structure and virtualenv.
+- name: 'Ensure base directory exists for "{{ plone_instance_name }}".'
+  file:
+    path: '{{ plone_target_path }}'
+    state: directory
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+    mode: 0755
+  tags:
+    - plone
+    - plone_clients
+    - plone_database
+    - plone_directories
+
+- name: 'Ensure plone version directory exists for "{{ plone_instance_name }}".'
+  file:
+    path: '{{ plone_target_path }}/{{ plone_version }}'
+    state: directory
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+  tags:
+    - plone
+    - plone_clients
+    - plone_database
+    - plone_directories
+
+- name: 'Ensure backup directory exists for "{{ plone_instance_name }}".'
+  when: plone_backup_path is defined and plone_backup_path
+  file:
+    path: '{{ plone_backup_path }}'
+    state: directory
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+    mode: 0755
+  tags:
+    - plone
+    - plone_backup
+    - plone_directories
+
+- name: 'Ensure Python virtualenv is available for "{{ plone_instance_name }}".'
+  command: '{{ plone_virtualenv_bin_path }}/virtualenv --python={{ plone_python_path }} {{ plone_virtualenv_path }}'
+  args:
+    creates: '{{ plone_virtualenv_path }}'
+  become_user: '{{ plone_user }}'
+  tags:
+    - plone
+    - plone_venv
+
+- name: Ensure correct ownership settings for virtualenv.
+  file:
+    path: '{{ plone_virtualenv_path }}'
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+    recurse: true
+  tags:
+    - plone
+    - plone_permissions
+    - plone_venv

@@ -3,8 +3,19 @@
 ###############################################################################
 # Default Variables for spirit.plone
 
+# Version and name
+plone_version: '4.3.11'
+plone_major_version: '{{ plone_version | truncate(3, killwords=true, end="") }}'
+plone_instance_name: 'default'
+
 # Python settings
+plone_python_version: 2.7
+plone_python_path: '/usr/bin/python{{ plone_python_version }}'
 plone_virtualenv_bin_path: '/usr/local/bin/'
+
+# Installation directories
+plone_target_path: '/opt/plone/{{ plone_instance_name }}'
+plone_backup_path:
 
 # Users and groups
 plone_group: plone

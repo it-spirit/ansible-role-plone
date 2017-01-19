@@ -30,6 +30,7 @@ plone_buildout_cache_url: 'https://dist.plone.org/release/{{ plone_version }}/bu
 plone_buildout_extra:
 plone_client_base_port: 8081
 plone_client_count: 2
+plone_client_max_memory: '0'
 plone_client_reserved_port: 8080
 plone_environment_vars:
   - 'zope_i18n_compile_mo_files true'
@@ -48,5 +49,12 @@ plone_zodb_cache_size: 30000
 plone_zserver_threads: 1
 
 # Supervisor Settings
+plone_autorestart: "unexpected"
+plone_autostart: "true"
+plone_redirect_stderr: "false"
+plone_startsecs: 1
+plone_stopwaitsecs: 10
 plone_superlance_version: 0.11
+plone_task_env_vars: {}
 plone_use_supervisor: true
+supervisor_config_dir: '/etc/supervisor/conf.d/'

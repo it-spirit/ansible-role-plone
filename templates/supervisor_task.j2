@@ -1,0 +1,62 @@
+###############################################################################
+# Supervisor configuration for Plone "{{ plone_instance_name }}".
+# -----------------------------------------------------------------------------
+# {{ ansible_managed }}
+#
+{% if plone_install_zeoserver %}
+[program:{{ supervisor_instance_discriminator }}zeoserver]
+command={{ plone_target_path }}/bin/zeoserver fg
+directory={{ plone_target_path }}
+redirect_stderr={{ plone_redirect_stderr }}
+autostart={{ plone_autostart }}
+autorestart={{ plone_autorestart }}
+user={{ plone_user }}
+startsecs={{ plone_startsecs }}
+stopwaitsecs={{ plone_stopwaitsecs }}
+{% if plone_task_env_vars | length > 0 %}
+environment={% for name, value in task_env_vars.iteritems() %}{{ name }}="{{ value }}"{% if not loop.last %},{% endif %}{% endfor %}
+{% endif %}
+{% endif %}
+
+[program:{{ supervisor_instance_discriminator }}client_reserved]
+command={{ plone_target_path }}/bin/client_reserved console
+directory={{ plone_target_path }}
+redirect_stderr={{ plone_redirect_stderr }}
+autostart=false
+autorestart=false
+user={{ plone_user }}
+startsecs={{ plone_startsecs }}
+stopwaitsecs={{ plone_stopwaitsecs }}
+{% if plone_task_env_vars | length > 0 %}
+environment={% for name, value in task_env_vars.iteritems() %}{{ name }}="{{ value }}"{% if not loop.last %},{% endif %}{% endfor %}
+{% endif %}
+
+{% for client in range(1, plone_client_count | int + 1) %}
+[program:{{ supervisor_instance_discriminator }}client{{ client }}]
+command={{ plone_target_path }}/bin/client{{ client }} console
+directory={{ plone_target_path }}
+redirect_stderr={{ plone_redirect_stderr }}
+autostart={{ plone_autostart }}
+autorestart={{ plone_autorestart }}
+user={{ plone_user }}
+startsecs={{ plone_startsecs }}
+stopwaitsecs={{ plone_stopwaitsecs }}
+{% if plone_task_env_vars | length > 0 %}
+environment={% for name, value in task_env_vars.iteritems() %}{{ name }}="{{ value }}"{% if not loop.last %},{% endif %}{% endfor %}
+{% endif %}
+
+[eventlistener:{{ supervisor_instance_discriminator }}httpok_client{{ client }}]
+command=httpok -p {{ supervisor_instance_discriminator }}clients:{{ supervisor_instance_discriminator }}client{{ client }} http://localhost:{{ "%s" % (plone_client_base_port | int + loop.index -1) }}/
+events=TICK_60
+
+{% endfor %}
+{% if plone_client_max_memory != '0' %}
+[eventlistener:{{ supervisor_instance_discriminator }}memmon]
+command=memmon -g {{ supervisor_instance_discriminator }}clients={{ plone_client_max_memory }} -c -m root -n {{ supervisor_instance_discriminator }}
+events=TICK_60
+
+{% endif %}
+[group:{{ supervisor_instance_discriminator }}clients]
+programs = {% for client in range(1, plone_client_count | int + 1) %}{{ supervisor_instance_discriminator }}client{{ client }}{% if not loop.last %},{% endif %}{% endfor %}
+
+priority = 10

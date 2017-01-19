@@ -1,6 +1,13 @@
 ---
 
 ###############################################################################
+# Set local facts.
+- name: Set convenience variables.
+  set_fact:
+    supervisor_instance_discriminator: '{{ "%s_" % plone_instance_name }}'
+
+
+###############################################################################
 # Configure supervisor management.
 - name: Get supervisor systemctl status.
   shell: systemctl is-enabled supervisor.service
@@ -29,3 +36,15 @@
   pip:
     name: superlance
     version: '{{ plone_superlance_version }}'
+
+- name: Ensure supervisor process control setup is done.
+  when: plone_use_supervisor and ansible_os_family == 'Debian'
+  template:
+    src: supervisor_task.j2
+    dest: '{{ supervisor_config_dir }}/plone_{{ supervisor_instance_discriminator }}supervisor.conf'
+    owner: root
+    group: root
+    mode: 644
+  register: supervisor_task_conf_debian
+  notify:
+    # - restart plone memory monitor

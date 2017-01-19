@@ -1,1 +1,22 @@
 ---
+
+###############################################################################
+# Configure supervisor management.
+- name: Get supervisor systemctl status.
+  shell: systemctl is-enabled supervisor.service
+  register: supervisor_service
+  when: plone_use_supervisor and ansible_distribution_release == 'xenial'
+  changed_when: false
+  failed_when: supervisor_service.stderr != ''
+
+- name: Ensure supervisor is started.
+  when: plone_use_supervisor
+  service:
+    name: supervisor
+    state: started
+    enabled: true
+
+# As of 2016-04-12, Xenial is not getting enabled by service play above
+- name: Set supervisor to start on boot in Ubuntu 16.04 Xenial.
+  when: plone_use_supervisor and ansible_distribution_release == 'xenial' and supervisor_service.stdout != "enabled"
+  shell: systemctl enable supervisor.service

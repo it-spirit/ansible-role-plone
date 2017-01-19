@@ -46,3 +46,6 @@ plone_zeo_ip: 127.0.0.1
 plone_zeo_port: 8100
 plone_zodb_cache_size: 30000
 plone_zserver_threads: 1
+
+# Supervisor Settings
+plone_use_supervisor: true

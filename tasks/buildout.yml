@@ -77,3 +77,13 @@
     - plone_buildout
     - plone_directories
     - plone_permissions
+
+- name: Copy buildout skeleton.
+  copy:
+    src: buildout_skeleton/
+    dest: '{{ plone_target_path }}'
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+  tags:
+    - plone
+    - plone_buildout

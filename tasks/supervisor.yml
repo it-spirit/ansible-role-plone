@@ -47,4 +47,9 @@
     mode: 644
   register: supervisor_task_conf_debian
   notify:
-    # - restart plone memory monitor
+    - restart plone memory monitor
+
+- name: Ensure supervisor task list is updated.
+  when: plone_use_supervisor and supervisor_task_conf_debian | changed
+  shell: '/bin/kill -HUP `supervisorctl pid`'
+  register: supervisord_bounced

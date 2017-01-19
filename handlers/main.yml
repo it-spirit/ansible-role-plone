@@ -2,3 +2,9 @@
 
 ###############################################################################
 # Handlers for spirit.plone
+
+- name: restart plone memory monitor
+  when: plone_use_supervisor and plone_client_max_memory != "0" and not supervisord_bounced.changed
+  supervisorctl:
+    name: '{{ supervisor_instance_discriminator }}memmon'
+    state: restarted

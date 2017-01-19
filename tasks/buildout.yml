@@ -99,3 +99,14 @@
   tags:
     - plone
     - plone_buildout
+
+
+###############################################################################
+# Bootstrap and run buildout
+- name: Check to see if buildout has already run.
+  stat:
+    path: '{{ plone_target_path }}/bin/client_reserved'
+  register: buildout_run
+  tags:
+    - plone
+    - plone_buildout

@@ -31,3 +31,11 @@
     - plone_users
     - plone_venv
     - plone_supervisor
+
+
+###############################################################################
+# Check for OS dependencies.
+- name: Include OS specific tasks.
+  include: 'OS_{{ ansible_os_family }}.yml'
+  tags:
+    - plone

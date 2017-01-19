@@ -1,4 +1,33 @@
 ---
 
 ###############################################################################
-# Tasks for spirit.plone
+# Check role requirements.
+- name: Ensure ansible version requirement is fulfilled.
+  fail: msg='We need bug fixes in Ansible 2. Please update your kit. "pip install -U Ansible"'
+  when: ansible_version.major < 2
+  tags:
+    - plone
+    - plone_backup
+    - plone_buildout
+    - plone_clients
+    - plone_database
+    - plone_directories
+    - plone_permissions
+    - plone_users
+    - plone_venv
+    - plone_supervisor
+
+- name: Ensure the initial password for Plone is set.
+  fail: msg='You must set the plone_initial_password variable.'
+  when: not plone_initial_password
+  tags:
+    - plone
+    - plone_backup
+    - plone_buildout
+    - plone_clients
+    - plone_database
+    - plone_directories
+    - plone_permissions
+    - plone_users
+    - plone_venv
+    - plone_supervisor

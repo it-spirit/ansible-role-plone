@@ -145,3 +145,17 @@
   tags:
     - plone
     - plone_buildout
+
+- name: 'Run buildout for "{{ plone_instance_name }}".'
+  when: plone_always_run_buildout or plone_autorun_buildout and (buildout_cfg_status.changed or not buildout_run.stat.exists)
+  command: bin/buildout
+  args:
+    chdir: '{{ plone_target_path }}'
+  become_user: '{{ plone_user }}'
+  register: buildout
+  notify:
+    # - restart plone clients
+    # - restart plone zeoserver
+  tags:
+    - plone
+    - plone_buildout

@@ -24,6 +24,8 @@ plone_user: plone
 # Buildout Settings
 plone_additional_eggs:
 plone_additional_versions:
+plone_always_run_buildout: false
+plone_autorun_buildout: true
 plone_buildout_cache_url: 'https://dist.plone.org/release/{{ plone_version }}/buildout-cache.tar.bz2'
 plone_buildout_extra:
 plone_client_base_port: 8081

@@ -1,1 +1,25 @@
 ---
+
+###############################################################################
+# Check system packages.
+- name: Ensure required packages are installed.
+  apt:
+    pkg: '{{ item }}'
+    state: present
+  with_items:
+    - build-essential
+    - cron
+    - curl
+    - python-setuptools
+    - python-pip
+    - python-dev
+    - libz-dev
+    - libssl-dev
+    - libjpeg-dev
+    - libxslt1-dev
+    - poppler-utils
+    - lynx-cur
+    - unzip
+    - supervisor
+    - git
+    - wv

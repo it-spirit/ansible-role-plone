@@ -23,3 +23,18 @@
     - supervisor
     - git
     - wv
+
+
+###############################################################################
+# Check for virtualenv.
+- name: Check if virtualenv is available.
+  stat:
+    path: '{{ plone_virtualenv_bin_path }}/virtualenv'
+  register: exec_virtualenv
+
+- name: Ensure recent python-virtualenv is available.
+  pip:
+    name: virtualenv
+    extra_args: '--install-option="--install-scripts={{ plone_virtualenv_bin_path }}"'
+    state: latest
+  when: exec_virtualenv.stat.exists == False

@@ -3,5 +3,8 @@
 ###############################################################################
 # Default Variables for spirit.plone
 
+# Python settings
+plone_virtualenv_bin_path: '/usr/local/bin/'
+
 # Buildout Settings
 plone_initial_password:

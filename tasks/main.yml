@@ -39,3 +39,9 @@
   include: 'OS_{{ ansible_os_family }}.yml'
   tags:
     - plone
+
+
+###############################################################################
+# Prepare system setup.
+- name: Include setup tasks.
+  include: 'setup.yml'

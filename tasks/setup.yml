@@ -1,1 +1,23 @@
 ---
+
+###############################################################################
+# Setup users and groups.
+- name: Ensure the plone system group is available.
+  group:
+    name: '{{ plone_group }}'
+  tags:
+    - plone
+    - plone_clients
+    - plone_database
+    - plone_users
+
+- name: Ensure the plone system user is available.
+  user:
+    name: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+    generate_ssh_key: true
+  tags:
+    - plone
+    - plone_clients
+    - plone_database
+    - plone_users

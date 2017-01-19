@@ -6,5 +6,9 @@
 # Python settings
 plone_virtualenv_bin_path: '/usr/local/bin/'
 
+# Users and groups
+plone_group: plone
+plone_user: plone
+
 # Buildout Settings
 plone_initial_password:

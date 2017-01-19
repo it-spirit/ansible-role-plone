@@ -87,3 +87,15 @@
   tags:
     - plone
     - plone_buildout
+
+- name: Copy buildout template.
+  template:
+    src: buildout.cfg.j2
+    dest: '{{ plone_target_path }}/buildout.cfg'
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+    backup: yes
+  register: buildout_cfg_status
+  tags:
+    - plone
+    - plone_buildout

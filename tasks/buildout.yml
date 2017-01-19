@@ -110,3 +110,38 @@
   tags:
     - plone
     - plone_buildout
+
+# Plone > 5.0; avoid bootstrap.py
+- name: 'Install zc.buildout with pip for "{{ plone_instance_name }}".'
+  pip:
+    name: 'zc.buildout'
+    state: 'present'
+    virtualenv: '{{ plone_virtualenv_path }}'
+  when: plone_version >= '5.0'
+  become_user: '{{ plone_user }}'
+  tags:
+    - plone
+    - plone_buildout
+
+- name: 'Bootstrap buildout for "{{ plone_instance_name }}".'
+  command: '{{ plone_virtualenv_path }}/bin/buildout bootstrap'
+  args:
+    creates: '{{ plone_target_path }}/bin/buildout'
+    chdir: '{{ plone_target_path }}'
+  when: plone_version >= '5.0'
+  become_user: '{{ plone_user }}'
+  tags:
+    - plone
+    - plone_buildout
+
+# Plone < 5.0; use bootstrap.py
+- name: 'Bootstrap buildout for "{{ plone_instance_name }}".'
+  command: '{{ plone_virtualenv_path }}/bin/python buildout-bootstrap.py --setuptools-version=8.0.4'
+  args:
+    creates: '{{ plone_target_path }}/bin/buildout'
+    chdir: '{{ plone_target_path }}'
+  when: plone_version < '5.0'
+  become_user: '{{ plone_user }}'
+  tags:
+    - plone
+    - plone_buildout

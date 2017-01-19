@@ -53,3 +53,26 @@
   when: plone_use_supervisor and supervisor_task_conf_debian | changed
   shell: '/bin/kill -HUP `supervisorctl pid`'
   register: supervisord_bounced
+
+- name: Pause if supervisord was restarted.
+  when: supervisord_bounced.changed
+  pause: minutes=1
+
+- name: Ensure supervisor zeoserver task is started
+  when: plone_use_supervisor and plone_install_zeoserver
+  supervisorctl:
+    name: '{{ supervisor_instance_discriminator }}zeoserver'
+    state: started
+
+- name: Ensure supervisor client tasks are started.
+  when: plone_use_supervisor
+  supervisorctl:
+    name: '{{ supervisor_instance_discriminator }}clients:{{ supervisor_instance_discriminator }}client{{ item }}'
+    state: started
+  with_sequence: count={{ plone_client_count }}
+
+- name: Ensure supervisor client memory monitor is started.
+  when: plone_use_supervisor and plone_client_max_memory != "0"
+  supervisorctl:
+    name: '{{ supervisor_instance_discriminator }}memmon'
+    state: started

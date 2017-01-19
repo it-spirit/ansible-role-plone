@@ -48,6 +48,6 @@
 
 
 ###############################################################################
-# Run Plone installation.
+# Prepare Plone installation.
 - name: Include Plone buildout tasks.
   include: 'buildout.yml'

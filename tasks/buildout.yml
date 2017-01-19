@@ -1,1 +1,79 @@
 ---
+
+###############################################################################
+# Set local facts.
+- name: Set convenience variables.
+  set_fact:
+    plone_virtualenv_path: '{{ plone_target_path }}/Python-{{ plone_python_version }}'
+  tags:
+    - plone
+    - plone_buildout
+    - plone_venv
+
+
+###############################################################################
+# Prepare Plone buildout.
+- name: Check if buildout cache already exists.
+  stat:
+    path: '{{ plone_target_path }}/{{ plone_version }}/buildout-cache'
+  register: buildout_cache
+  tags:
+    - plone
+    - plone_buildout
+    - plone_directories
+    - plone_permissions
+
+- name: Download buildout cache if needed.
+  when: plone_buildout_cache_url and not buildout_cache.stat.exists
+  unarchive:
+    copy: false
+    src: '{{ plone_buildout_cache_url }}'
+    dest: '{{ plone_target_path }}/{{ plone_version }}'
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+  ignore_errors: true
+  register: buildout_cache_download
+  tags:
+    - plone
+    - plone_buildout
+    - plone_directories
+    - plone_permissions
+
+- name: Ensure buildout cache directory exists.
+  file:
+    path: '{{ plone_target_path }}/{{ plone_version }}/buildout-cache'
+    state: directory
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+  tags:
+    - plone
+    - plone_buildout
+    - plone_directories
+
+- name: Ensure buildout cache directories exist.
+  file:
+    path: '{{ plone_target_path }}/{{ plone_version }}/buildout-cache/{{ item }}'
+    state: directory
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+  with_items:
+    - eggs
+    - downloads
+    - extends
+  tags:
+    - plone
+    - plone_buildout
+    - plone_directories
+
+- name: Ensure correct ownership settings in buildout cache after re-download.
+  when: buildout_cache_download.changed
+  file:
+    path: '{{ plone_target_path }}/{{ plone_version }}/buildout-cache'
+    owner: '{{ plone_user }}'
+    group: '{{ plone_group }}'
+    recurse: yes
+  tags:
+    - plone
+    - plone_buildout
+    - plone_directories
+    - plone_permissions

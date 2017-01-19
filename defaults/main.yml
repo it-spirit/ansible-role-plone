@@ -22,4 +22,5 @@ plone_group: plone
 plone_user: plone
 
 # Buildout Settings
+plone_buildout_cache_url: 'https://dist.plone.org/release/{{ plone_version }}/buildout-cache.tar.bz2'
 plone_initial_password:

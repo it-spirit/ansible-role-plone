@@ -51,3 +51,12 @@
 # Prepare Plone installation.
 - name: Include Plone buildout tasks.
   include: 'buildout.yml'
+
+
+###############################################################################
+# Prepare Supervisor management.
+- name: Include supervisor management tasks.
+  include: 'supervisor.yml'
+  tags:
+    - plone
+    - plone_supervisor

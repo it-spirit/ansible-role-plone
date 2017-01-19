@@ -45,3 +45,9 @@
 # Prepare system setup.
 - name: Include setup tasks.
   include: 'setup.yml'
+
+
+###############################################################################
+# Run Plone installation.
+- name: Include Plone buildout tasks.
+  include: 'buildout.yml'

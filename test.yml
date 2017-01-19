@@ -9,5 +9,15 @@
 
   roles:
     - role: ../ansible-role-plone
+      plone_instance_name: test_4
+      plone_version: '4.3.11'
+      plone_client_count: 1
+    - role: ../ansible-role-plone
+      plone_instance_name: test_5
+      plone_version: '5.0.6'
+      plone_client_base_port: 8091
+      plone_client_reserved_port: 8090
+      plone_zeo_port: 8190
+      plone_client_count: 1
 
   tasks:

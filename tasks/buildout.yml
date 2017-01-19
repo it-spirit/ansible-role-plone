@@ -154,8 +154,8 @@
   become_user: '{{ plone_user }}'
   register: buildout
   notify:
-    # - restart plone clients
-    # - restart plone zeoserver
+    - restart plone clients
+    - restart plone zeoserver
   tags:
     - plone
     - plone_buildout

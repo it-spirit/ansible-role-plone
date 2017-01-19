@@ -3,6 +3,24 @@
 ###############################################################################
 # Handlers for spirit.plone
 
+- name: restart plone zeoserver
+  # Ansible 2.2 feature:
+  # name: Ensure supervisor zeoserver task is restarted.
+  # listen: "restart plone zeoserver"
+  supervisorctl:
+    name: '{{ supervisor_instance_discriminator }}zeoserver'
+    state: restarted
+  when: plone_install_zeoserver and plone_use_supervisor and plone_restart_after_buildout and not supervisord_bounced.changed
+
+- name: restart plone clients
+  # Ansible 2.2 feature:
+  # name: Ensure supervisor zeoclients tasks are restarted.
+  # listen: "restart plone clients"
+  supervisorctl:
+    name: '{{ supervisor_instance_discriminator }}clients:'
+    state: restarted
+  when: plone_use_supervisor and plone_restart_after_buildout and not supervisord_bounced.changed
+
 - name: restart plone memory monitor
   when: plone_use_supervisor and plone_client_max_memory != "0" and not supervisord_bounced.changed
   supervisorctl:

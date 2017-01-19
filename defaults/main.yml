@@ -40,6 +40,7 @@ plone_initial_password:
 plone_install_zeoserver: true
 plone_keep_backups: 3
 plone_keep_blob_days: 21
+plone_restart_after_buildout: true
 plone_rsync_backup_options:
 plone_sources:
 plone_zcml_slugs:

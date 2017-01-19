@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become: true
+  gather_facts: true
+
+  vars:
+    plone_initial_password: admin
+
+  roles:
+    - role: ../ansible-role-plone
+
+  tasks:

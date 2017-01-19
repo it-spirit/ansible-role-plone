@@ -20,3 +20,12 @@
 - name: Set supervisor to start on boot in Ubuntu 16.04 Xenial.
   when: plone_use_supervisor and ansible_distribution_release == 'xenial' and supervisor_service.stdout != "enabled"
   shell: systemctl enable supervisor.service
+
+
+###############################################################################
+# Supervisor setup.
+- name: Ensure superlance is installed.
+  when: plone_use_supervisor
+  pip:
+    name: superlance
+    version: '{{ plone_superlance_version }}'

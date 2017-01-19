@@ -48,4 +48,5 @@ plone_zodb_cache_size: 30000
 plone_zserver_threads: 1
 
 # Supervisor Settings
+plone_superlance_version: 0.11
 plone_use_supervisor: true

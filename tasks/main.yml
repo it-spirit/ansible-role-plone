@@ -60,3 +60,17 @@
   tags:
     - plone
     - plone_supervisor
+
+# - include: "plone_sites.yml"
+
+# - include: "cron.yml"
+
+# - name: 'Ensure aliases contains entry for user {{ plone_user }}.'
+#   lineinfile:
+#     dest: '/etc/aliases'
+#     create: true
+#     state: present
+#     line: '{{ plone_user }}: {{ plone_user_alias }}'
+#     regexp: '^{{ plone_user }}'
+#   tags:
+#     - plone

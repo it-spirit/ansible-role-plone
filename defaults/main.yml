@@ -20,18 +20,25 @@ plone_backup_path:
 # Users and groups
 plone_group: plone
 plone_user: plone
+# plone_user_alias: root
 
 # Buildout Settings
 plone_additional_eggs:
 plone_additional_versions:
 plone_always_run_buildout: false
 plone_autorun_buildout: true
+# plone_backup_at:
+#   minute: 30
+#   hour: 2
+#   weekday: "*"
 plone_buildout_cache_url: 'https://dist.plone.org/release/{{ plone_version }}/buildout-cache.tar.bz2'
 plone_buildout_extra:
 plone_client_base_port: 8081
 plone_client_count: 2
 plone_client_max_memory: '0'
 plone_client_reserved_port: 8080
+# plone_do_backup: false
+# plone_do_pack: false
 plone_environment_vars:
   - 'zope_i18n_compile_mo_files true'
 plone_extra_extends:
@@ -40,6 +47,10 @@ plone_initial_password:
 plone_install_zeoserver: true
 plone_keep_backups: 3
 plone_keep_blob_days: 21
+# plone_pack_at:
+#   minute: 30
+#   hour: 1
+#   weekday: 7
 plone_restart_after_buildout: true
 plone_rsync_backup_options:
 plone_sources:
